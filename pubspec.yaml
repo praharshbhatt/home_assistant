@@ -1,0 +1,17 @@
+name: home_assistant
+description: A Dart library for interacting with Home Assistant APIs.
+
+version: 1.0.0
+repository: https://github.com/praharshbhatt/home_assistant
+homepage: https://github.com/praharshbhatt/home_assistant
+
+environment:
+  sdk: '>=2.13.0 <3.0.0'
+
+# Add regular dependencies here.
+dependencies:
+  http: ^1.1.0
+
+dev_dependencies:
+  lints: ^2.1.1
+  test: ^1.24.7
