@@ -1,6 +1,6 @@
 # home_assistant
 
-[<img src="https://design.home-assistant.io/images/brand/logo.png" height="200" />](https://github.com/praharshbhatt/home_assistant)
+[<img src="https://design.home-assistant.io/images/brand/logo.png" height="400" />](https://github.com/praharshbhatt/home_assistant)
 
 [![Pub Version](https://img.shields.io/pub/v/home_assistant.svg)](https://pub.dev/packages/home_assistant)
 ![Dart CI](https://github.com/praharshbhatt/home_assistant-dart/workflows/Dart%20CI/badge.svg)
@@ -70,4 +70,4 @@ For more detailed usage and examples, please refer to the [documentation](https:
 
 ## Contributing
 
-We welcome contributions! If you find a bug or have a feature request, please [open an issue](https://github.com/praharshbhatt/home_assistant-dart/issues) on GitHub. If you want to contribute code, please fork the repository and submit a pull request.
+We welcome contributions! If you find a bug or have a feature request, please [open an issue](https://github.com/praharshbhatt/home_assistant/issues) on GitHub. If you want to contribute code, please fork the repository and submit a pull request.
