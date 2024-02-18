@@ -1,0 +1,29 @@
+name: Dart
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dart-lang/setup-dart@v1
+
+      - run: dart pub get
+      - run: dart format --output=none --set-exit-if-changed .
+      - run: dart analyze
+      # - run: dart test
+
+
+      # Deploy to pub.dev
+      - name: pub.dev-cd
+      # You may pin to the exact commit or the version.
+      # uses: RatakondalaArun/pub.dev-cd@784b9b03cd5afa197911141eca19a05e305c9b20
+      uses: RatakondalaArun/pub.dev-cd@v1.0.0
+      with:
+        # Creditionals for pub.dev site to deploy the package.
+        creditionals: 
+        # Path to the package.
+        package_path: # optional, default is .

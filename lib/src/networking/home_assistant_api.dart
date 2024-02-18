@@ -92,9 +92,11 @@ class HomeAssistantApi {
   /// Returns a [bool] indicating whether the service call was successful.
   /// The [action] and [additionalActions] parameter is the [Entity.attributes] value for the service
   Future<bool> executeService(String entityId, String action, {Map<String, dynamic> additionalActions = const {}}) async {
+    Map<String, dynamic> data = Map.from(additionalActions);
+    data["entity_id"] = entityId;
     final response = await httpClient.post(
       '/api/services/${entityId.split('.').first}/$action',
-      additionalActions..addAll({"entity_id": entityId}),
+      data,
     );
 
     if (response.statusCode == 200) {
