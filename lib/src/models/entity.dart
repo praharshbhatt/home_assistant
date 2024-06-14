@@ -90,35 +90,39 @@ class EntityAttributes {
   });
 
   factory EntityAttributes.fromJson(Map<String, dynamic> json) {
+    bool containsKeyAndValue(Map<String, dynamic> json, String key){
+      return json.containsKey(key) && json[key] != null;
+    }
+
     return EntityAttributes(
       editable: json['editable'],
       id: json['id'],
       userId: json['user_id'],
-      deviceTrackers: json.containsKey('device_trackers') ? List<String>.from(json['device_trackers']) : [],
+      deviceTrackers: containsKeyAndValue(json, 'device_trackers') ? List<String>.from(json['device_trackers']) : [],
       friendlyName: json['friendly_name'],
-      options: json.containsKey('options') ? List<String>.from(json['options']) : [],
+      options: containsKeyAndValue(json, 'options') ? List<String>.from(json['options']) : [],
 
       // Light
       supportedColorModes:
-          json.containsKey('supported_color_modes') ? List<String>.from(json['supported_color_modes']) : [],
-      brightness: json.containsKey('brightness') ? json['brightness'] : null,
-      rgbColor: json.containsKey('rgb_color') ? List<int>.from(json['rgb_color']) : null,
+          containsKeyAndValue(json, 'supported_color_modes') ? List<String>.from(json['supported_color_modes']) : [],
+      brightness: containsKeyAndValue(json, 'brightness') ? json['brightness'] : null,
+      rgbColor: containsKeyAndValue(json, 'rgb_color') ? List<int>.from(json['rgb_color']) : null,
 
       // Climate
-      hvacModes: json.containsKey('hvac_modes') ? List<String>.from(json['hvac_modes']) : null,
-      minTemp: json.containsKey('min_temp') ? json['min_temp'] : null,
-      maxTemp: json.containsKey('max_temp') ? json['max_temp'] : null,
-      currentTemperature: json.containsKey('current_temperature') ? json['current_temperature'] : null,
-      temperature: json.containsKey('temperature') ? json['temperature'] : null,
-      targetTempLow: json.containsKey('target_temp_low') ? json['target_temp_low'] : null,
-      targetTempHigh: json.containsKey('target_temp_high') ? json['target_temp_high'] : null,
-      presetMode: json.containsKey('preset_mode') ? json['preset_mode'] : null,
-      hvacAction: json.containsKey('hvac_action') ? json['hvac_action'] : null,
-      fanMode: json.containsKey('fan_mode') ? json['fan_mode'] : null,
+      hvacModes: containsKeyAndValue(json, 'hvac_modes') ? List<String>.from(json['hvac_modes']) : null,
+      minTemp: containsKeyAndValue(json, 'min_temp') ? json['min_temp'] : null,
+      maxTemp: containsKeyAndValue(json, 'max_temp') ? json['max_temp'] : null,
+      currentTemperature: containsKeyAndValue(json, 'current_temperature') ? json['current_temperature'] : null,
+      temperature: containsKeyAndValue(json, 'temperature') ? json['temperature'] : null,
+      targetTempLow: containsKeyAndValue(json, 'target_temp_low') ? json['target_temp_low'] : null,
+      targetTempHigh: containsKeyAndValue(json, 'target_temp_high') ? json['target_temp_high'] : null,
+      presetMode: containsKeyAndValue(json, 'preset_mode') ? json['preset_mode'] : null,
+      hvacAction: containsKeyAndValue(json, 'hvac_action') ? json['hvac_action'] : null,
+      fanMode: containsKeyAndValue(json, 'fan_mode') ? json['fan_mode'] : null,
 
       // Camera
-      videoUrl: json.containsKey('video_url') ? json['video_url'] : null,
-      entityPicture: json.containsKey('entity_picture') ? json['entity_picture'] : null,
+      videoUrl: containsKeyAndValue(json, 'video_url') ? json['video_url'] : null,
+      entityPicture: containsKeyAndValue(json, 'entity_picture') ? json['entity_picture'] : null,
 
     );
   }
