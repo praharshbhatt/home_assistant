@@ -105,7 +105,7 @@ class EntityAttributes {
       // Light
       supportedColorModes:
           containsKeyAndValue(json, 'supported_color_modes') ? List<String>.from(json['supported_color_modes']) : [],
-      brightness: containsKeyAndValue(json, 'brightness') ? json['brightness'] : null,
+      brightness: containsKeyAndValue(json, 'brightness') ? json['brightness'].toDouble() : null,
       rgbColor: containsKeyAndValue(json, 'rgb_color') ? List<int>.from(json['rgb_color']) : null,
 
       // Climate
