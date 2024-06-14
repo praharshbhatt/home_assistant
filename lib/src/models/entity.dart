@@ -47,7 +47,7 @@ class EntityAttributes {
 
   // Light
   List<String>? options, supportedColorModes;
-  int? brightness;
+  double? brightness;
   List<int>? rgbColor;
 
   // Climate
