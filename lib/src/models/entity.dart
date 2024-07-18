@@ -132,9 +132,8 @@ class EntityAttributes {
       entityPicture: containsKeyAndValue(json, 'entity_picture') ? json['entity_picture'] : null,
 
       // Media Player
-      media_title: json.containsKey('media_title') ? json['media_title'] : null,
-      media_artist:
-          json.containsKey('media_artist') ? json['media_artist'] : null,
+      media_title: containsKeyAndValue(json, 'media_title') ? json['media_title'] : null,
+      media_artist: containsKeyAndValue(json, 'media_artist') ? json['media_artist'] : null,
     );
   }
 
