@@ -59,6 +59,9 @@ class EntityAttributes {
   // Camera
   String? videoUrl, entityPicture;
 
+  // Media Player
+  String? media_title, media_artist;
+
   EntityAttributes({
     required this.deviceTrackers,
     required this.userId,
@@ -87,6 +90,10 @@ class EntityAttributes {
     // Camera
     this.videoUrl,
     this.entityPicture,
+
+    // Media Player
+    this.media_title,
+    this.media_artist,
   });
 
   factory EntityAttributes.fromJson(Map<String, dynamic> json) {
@@ -124,6 +131,9 @@ class EntityAttributes {
       videoUrl: containsKeyAndValue(json, 'video_url') ? json['video_url'] : null,
       entityPicture: containsKeyAndValue(json, 'entity_picture') ? json['entity_picture'] : null,
 
+      // Media Player
+      media_title: containsKeyAndValue(json, 'media_title') ? json['media_title'] : null,
+      media_artist: containsKeyAndValue(json, 'media_artist') ? json['media_artist'] : null,
     );
   }
 
@@ -155,6 +165,10 @@ class EntityAttributes {
       // Camera
       'video_url': videoUrl,
       'entity_picture': entityPicture,
+
+      // Media Player
+      'media_title': media_title,
+      'media_artist': media_artist,
     };
   }
 }
