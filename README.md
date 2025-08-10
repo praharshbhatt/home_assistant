@@ -3,7 +3,7 @@
 [<img src="https://design.home-assistant.io/images/brand/logo.png" height="400" />](https://github.com/praharshbhatt/home_assistant)
 
 [![Pub Version](https://img.shields.io/pub/v/home_assistant.svg)](https://pub.dev/packages/home_assistant)
-![Dart CI](https://github.com/praharshbhatt/home_assistant-dart/workflows/Dart%20CI/badge.svg)
+[![package publisher](https://img.shields.io/pub/publisher/http.svg)](https://pub.dev/packages/home_assistant/publisher)
 
 A Dart library for interacting with Home Assistant APIs.
 
@@ -25,7 +25,7 @@ To use this package, add `home_assistant` as a dependency in your `pubspec.yaml`
 
 ```yaml
 dependencies:
-  home_assistant: ^1.0.0 # Use the latest version from pub.dev
+  home_assistant: ^2.0.0 # Use the latest version from pub.dev
 ```
 
 Then, import the library in your Dart code:
@@ -57,16 +57,52 @@ if (isApiWorking) {
 final entities = await homeAssistant.fetchStates();
 print('Entities: $entities');
 
-// Control a switch.
-try {
-  await homeAssistant.turnOnSwitch('switch.entity_id');
+// Control an Entity / Execute a service.
+
+
+// Example of a switch:
+final success = await homeAssistant.executeService(
+    'switch.entity_id',
+    'turn_on',
+    additionalActions: {},
+);
+if (success) {
   print('Switch turned on.');
-} catch (e) {
+} else {
   print('Failed to turn on the switch: $e');
 }
+
+// Example of a light:
+final success = await homeAssistant.executeService(
+    'light.entity_id',
+    'turn_on',
+    additionalActions: {'brightness': 255},
+);
+if (success) {
+  print('Light turned on with brightness.');
+} else {
+  print('Failed to turn on the light: $e');
+}
+
+// Example of a climate device:
+final success = await homeAssistant.executeService(
+    await homeAssistant.executeService(
+        'climate.entity_id',
+        'set_temperature',
+        additionalActions: {
+          'temperature': 22,
+          'hvac_mode': 'heat', // Optional: specify HVAC mode if needed
+        },
+);
+if (success) {
+    print('Temperature set to 22 degrees.');
+} else {
+    print('Failed to set temperature: $e');
+}
+
 ```
 
-For more detailed usage and examples, please refer to the [documentation](https://pub.dev/packages/home_assistant).
+For more detailed usage and examples, please refer to the [documentation](https://pub.dev/packages/home_assistant) and the available [rest endpoints](https://developers.home-assistant.io/docs/api/rest/).
 
 ## Contributing
 

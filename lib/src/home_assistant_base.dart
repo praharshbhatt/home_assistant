@@ -57,5 +57,9 @@ class HomeAssistant {
     String action, {
     Map<String, dynamic> additionalActions = const {},
   }) =>
-      _api.executeService(entityId, action, additionalActions: additionalActions);
+      _api.executeService(
+        entityId,
+        action,
+        additionalActions: additionalActions,
+      );
 }

@@ -1,4 +1,11 @@
 export 'package:home_assistant/src/models/configuration.dart';
 export 'package:home_assistant/src/models/entity.dart';
+export 'package:home_assistant/src/models/devices/camera_entity.dart';
+export 'package:home_assistant/src/models/devices/light_entity.dart';
+export 'package:home_assistant/src/models/devices/climate_entity.dart';
 export 'package:home_assistant/src/models/service.dart';
+export 'package:home_assistant/src/models/devices/sensor_entity.dart';
+export 'package:home_assistant/src/models/devices/switch_entity.dart';
+export 'package:home_assistant/src/models/devices/lock_entity.dart';
+export 'package:home_assistant/src/models/devices/fan_entity.dart';
 export 'src/home_assistant_base.dart';
