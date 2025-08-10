@@ -1,202 +1,150 @@
-class Entity {
-  String entityId;
-  String state;
-  EntityAttributes attributes;
-  String lastChanged;
-  String lastUpdated;
-  EntityContext context;
+import 'package:json_annotation/json_annotation.dart';
 
-  Entity({
+part 'entity.g.dart';
+
+/// Represents a generic entity in Home Assistant.
+///
+/// An entity can be a light, switch, sensor, or any other device that can be
+/// controlled or monitored. Each entity has a unique identifier, a state, and
+/// various attributes.
+///
+/// For more details, refer to the [Home Assistant Entity Documentation](https://developers.home-assistant.io/docs/core/entity/).
+@JsonSerializable(createToJson: false, fieldRename: FieldRename.snake)
+class Entity {
+  /// The unique identifier for the entity.
+  ///
+  /// For example, "light.living_room" or "sensor.temperature".
+  final String entityId;
+
+  /// The current state of the entity.
+  ///
+  /// For example, "on", "off", or a specific value like "23°C".
+  final String state;
+
+  /// The timestamp of the last update to the entity's state.
+  final String lastUpdated;
+
+  /// The timestamp of the last report received for the entity.
+  final String lastReported;
+
+  /// The timestamp of the last state change for the entity.
+  final String lastChanged;
+
+  /// Metadata about the entity's context.
+  ///
+  /// This includes information such as the user or parent entity that caused
+  /// the state change.
+  final EntityContext context;
+
+  /// The attributes associated with the entity.
+  ///
+  /// These provide additional details about the entity, such as its name,
+  /// options, or other metadata.
+  final EntityAttributes attributes;
+
+  /// Creates a new [Entity] instance.
+  ///
+  /// [entityId] is the unique identifier for the entity.
+  /// [state] represents the current state of the entity.
+  /// [lastUpdated], [lastReported], and [lastChanged] provide timestamps
+  /// for the entity's state changes.
+  /// [context] contains additional metadata about the entity.
+  /// [attributes] contains additional details about the entity.
+  const Entity({
     required this.entityId,
     required this.state,
-    required this.attributes,
-    required this.lastChanged,
     required this.lastUpdated,
+    required this.lastReported,
+    required this.lastChanged,
     required this.context,
+    required this.attributes,
   });
 
-  factory Entity.fromJson(Map<String, dynamic> json) {
-    return Entity(
-      entityId: json['entity_id'],
-      state: json['state'],
-      attributes: EntityAttributes.fromJson(json['attributes']),
-      lastChanged: json['last_changed'],
-      lastUpdated: json['last_updated'],
-      context: EntityContext.fromJson(json['context']),
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'entity_id': entityId,
-      'state': state,
-      'attributes': attributes.toJson(),
-      'last_changed': lastChanged,
-      'last_updated': lastUpdated,
-      'context': context.toJson(),
-    };
-  }
+  /// Creates a new [Entity] instance from a JSON object.
+  ///
+  /// [json] is the JSON map containing the entity data.
+  factory Entity.fromJson(Map<String, dynamic> json) => _$EntityFromJson(json);
 }
 
+/// Represents the attributes of a generic entity in Home Assistant.
+///
+/// These attributes provide additional metadata about the entity, such as its
+/// name, options, or user-specific details.
+@JsonSerializable(createToJson: false, fieldRename: FieldRename.snake)
 class EntityAttributes {
-  bool? editable;
-  String? id;
-  String? userId;
-  List<String> deviceTrackers;
-  String friendlyName;
+  /// Indicates whether the entity is editable.
+  final bool? editable;
 
-  // Light
-  List<String>? options, supportedColorModes;
-  double? brightness;
-  List<int>? rgbColor;
+  /// The unique identifier for the entity's attributes.
+  final String? id;
 
-  // Climate
-  List<String>? hvacModes;
-  int? minTemp, maxTemp;
-  double? currentTemperature, temperature, targetTempLow, targetTempHigh;
-  String? presetMode, hvacAction, fanMode;
+  /// The friendly name of the entity.
+  ///
+  /// This is a user-friendly name for display purposes.
+  final String? friendlyName;
 
-  // Camera
-  String? videoUrl, entityPicture;
+  /// The user ID associated with the entity.
+  final String? userId;
 
-  // Media Player
-  String? media_title, media_artist;
+  /// A list of device trackers associated with the entity.
+  final List<String>? deviceTrackers;
 
-  EntityAttributes({
-    required this.deviceTrackers,
-    required this.userId,
-    required this.friendlyName,
+  /// A list of options available for the entity.
+  final List<String>? options;
+
+  /// Creates a new [EntityAttributes] instance.
+  ///
+  /// [editable] indicates if the entity is editable.
+  /// [id] is the unique identifier for the attributes.
+  /// [friendlyName] is the user-friendly name of the entity.
+  /// [userId] is the user ID associated with the entity.
+  /// [deviceTrackers] is a list of associated device trackers.
+  /// [options] is a list of available options for the entity.
+  const EntityAttributes({
     this.editable,
     this.id,
+    this.friendlyName,
+    this.userId,
+    this.deviceTrackers,
     this.options,
-
-    // Light
-    this.supportedColorModes,
-    this.brightness,
-    this.rgbColor,
-
-    // Climate
-    this.hvacModes,
-    this.minTemp,
-    this.maxTemp,
-    this.currentTemperature,
-    this.temperature,
-    this.targetTempLow,
-    this.targetTempHigh,
-    this.presetMode,
-    this.hvacAction,
-    this.fanMode,
-
-    // Camera
-    this.videoUrl,
-    this.entityPicture,
-
-    // Media Player
-    this.media_title,
-    this.media_artist,
   });
 
-  factory EntityAttributes.fromJson(Map<String, dynamic> json) {
-    bool containsKeyAndValue(Map<String, dynamic> json, String key){
-      return json.containsKey(key) && json[key] != null;
-    }
-
-    return EntityAttributes(
-      editable: json['editable'],
-      id: json['id'],
-      userId: json['user_id'],
-      deviceTrackers: containsKeyAndValue(json, 'device_trackers') ? List<String>.from(json['device_trackers']) : [],
-      friendlyName: json['friendly_name'],
-      options: containsKeyAndValue(json, 'options') ? List<String>.from(json['options']) : [],
-
-      // Light
-      supportedColorModes:
-          containsKeyAndValue(json, 'supported_color_modes') ? List<String>.from(json['supported_color_modes']) : [],
-      brightness: containsKeyAndValue(json, 'brightness') ? json['brightness'].toDouble() : null,
-      rgbColor: containsKeyAndValue(json, 'rgb_color') ? List<int>.from(json['rgb_color']) : null,
-
-      // Climate
-      hvacModes: containsKeyAndValue(json, 'hvac_modes') ? List<String>.from(json['hvac_modes']) : null,
-      minTemp: containsKeyAndValue(json, 'min_temp') ? json['min_temp'] : null,
-      maxTemp: containsKeyAndValue(json, 'max_temp') ? json['max_temp'] : null,
-      currentTemperature: containsKeyAndValue(json, 'current_temperature') ? json['current_temperature'] : null,
-      temperature: containsKeyAndValue(json, 'temperature') ? json['temperature'] : null,
-      targetTempLow: containsKeyAndValue(json, 'target_temp_low') ? json['target_temp_low'] : null,
-      targetTempHigh: containsKeyAndValue(json, 'target_temp_high') ? json['target_temp_high'] : null,
-      presetMode: containsKeyAndValue(json, 'preset_mode') ? json['preset_mode'] : null,
-      hvacAction: containsKeyAndValue(json, 'hvac_action') ? json['hvac_action'] : null,
-      fanMode: containsKeyAndValue(json, 'fan_mode') ? json['fan_mode'] : null,
-
-      // Camera
-      videoUrl: containsKeyAndValue(json, 'video_url') ? json['video_url'] : null,
-      entityPicture: containsKeyAndValue(json, 'entity_picture') ? json['entity_picture'] : null,
-
-      // Media Player
-      media_title: containsKeyAndValue(json, 'media_title') ? json['media_title'] : null,
-      media_artist: containsKeyAndValue(json, 'media_artist') ? json['media_artist'] : null,
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'editable': editable,
-      'id': id,
-      'user_id': userId,
-      'device_trackers': deviceTrackers,
-      'friendly_name': friendlyName,
-
-      // Light
-      'brightness': brightness != null ? brightness : null,
-      'supported_color_modes': supportedColorModes != null ? supportedColorModes : null,
-      'rgb_color': rgbColor != null ? rgbColor : null,
-
-      // Climate
-      'hvac_modes': hvacModes != null ? hvacModes : null,
-      'min_temp': minTemp,
-      'max_temp': maxTemp,
-      'current_temperature': currentTemperature,
-      'temperature': temperature,
-      'target_temp_low': targetTempLow,
-      'target_temp_high': targetTempHigh,
-      'preset_mode': presetMode,
-      'hvac_action': hvacAction,
-      'fan_mode': fanMode,
-
-      // Camera
-      'video_url': videoUrl,
-      'entity_picture': entityPicture,
-
-      // Media Player
-      'media_title': media_title,
-      'media_artist': media_artist,
-    };
-  }
+  /// Creates a new [EntityAttributes] instance from a JSON object.
+  ///
+  /// [json] is the JSON map containing the attributes data.
+  factory EntityAttributes.fromJson(Map<String, dynamic> json) =>
+      _$EntityAttributesFromJson(json);
 }
 
+/// Represents the context of a generic entity in Home Assistant.
+///
+/// The context provides metadata about the entity, such as the user or parent
+/// entity that caused a state change.
+@JsonSerializable(createToJson: false, fieldRename: FieldRename.snake)
 class EntityContext {
-  String id;
-  String? parentId;
-  String? userId;
+  /// The unique identifier for the context.
+  final String? id;
 
-  EntityContext({
-    required this.id,
+  /// The unique identifier of the parent entity, if applicable.
+  final String? parentId;
+
+  /// The user ID associated with the context.
+  final String? userId;
+
+  /// Creates a new [EntityContext] instance.
+  ///
+  /// [id] is the unique identifier for the context.
+  /// [parentId] is the unique identifier of the parent entity.
+  /// [userId] is the user ID associated with the context.
+  const EntityContext({
+    this.id,
     this.parentId,
     this.userId,
   });
 
-  factory EntityContext.fromJson(Map<String, dynamic> json) {
-    return EntityContext(
-      id: json['id'],
-      parentId: json['parent_id'],
-      userId: json['user_id'],
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'parent_id': parentId,
-      'user_id': userId,
-    };
-  }
+  /// Creates a new [EntityContext] instance from a JSON object.
+  ///
+  /// [json] is the JSON map containing the context data.
+  factory EntityContext.fromJson(Map<String, dynamic> json) =>
+      _$EntityContextFromJson(json);
 }
